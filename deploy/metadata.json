@@ -1,5 +1,12 @@
 {
-    "name": "intro",
     "description": "beam introduction to flex templaes",
-    "parameters": []
-  }
+    "name": "intro",
+    "parameters": [
+        {
+            "help_text": "test param",
+            "is_optional": false,
+            "label": "test",
+            "name": "test"
+        }
+    ]
+}
