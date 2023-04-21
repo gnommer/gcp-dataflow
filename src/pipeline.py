@@ -1,6 +1,6 @@
 import apache_beam as beam
 from apache_beam import Pipeline
-from apache_beam.pipeline_options import PipelineOptions
+from apache_beam.options.pipeline_options import PipelineOptions
 
 if __name__ == "__main__":
     import argparse
