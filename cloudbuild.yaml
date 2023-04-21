@@ -10,7 +10,7 @@ steps:
     args: [ 'dataflow', 'flex-template', 'build', '${_TEMPLATE_GCS_LOCATION}', '--image', '${_IMAGE_NAME}', '--sdk-language', 'PYTHON', '--metadata-file', 'deploy/metadata.json']
 substitutions:
   _IMAGE_NAME: 'gcr.io/${PROJECT_ID}/intro_beam:${SHORT_SHA}'
-  _TEMPLATE_GCS_LOCATION: gs://dataflow-image-custom
+  _TEMPLATE_GCS_LOCATION: gs://dataflow-image-custom/
 options:
   dynamic_substitutions: True
 
