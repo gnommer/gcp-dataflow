@@ -11,9 +11,9 @@ COPY . ${WORKDIR}
 RUN apt-get update \
     && apt-get install -y libffi-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir upgrade pip \
-    && pip3 download --no-cache-dir -r ${WORKDIR}/requirements.txt \
-    && pip3 install --no-cache-dir -r ${WORKDIR}/requirements.txt
+    && pip install --no-cache-dir --upgrade pip \
+    && pip download --no-cache-dir -r ${WORKDIR}/requirements.txt \
+    && pip install --no-cache-dir -r ${WORKDIR}/requirements.txt
 
 ENV FLEX_TEMPLATE_PYTHON_PY_FILE="${WORKDIR}/src/pipeline.py"
 
