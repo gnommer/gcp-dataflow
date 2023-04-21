@@ -4,6 +4,7 @@
     "parameters": [
         {
             "help_text": "test param",
+            "helpText": "test param",
             "is_optional": false,
             "label": "test",
             "name": "test"
