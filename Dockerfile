@@ -1,5 +1,5 @@
 FROM gcr.io/dataflow-templates-base/python3-template-launcher-base:latest as template_launcher
-FROM python:3.6-slim
+FROM python:3.6
 
 COPY --from=template_launcher /opt/google/dataflow/python_template_launcher /opt/google/dataflow/python_template_launcher
 
