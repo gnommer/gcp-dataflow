@@ -1,0 +1,10 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'build-dataflow-container'
+    entrypoint: 'gcloud'
+    args: [ 'builds', 'submit', '--project=$PROJECT_ID', '--tag', 'gcr.io/$PROJECT_ID/$_TARGET_GCR_IMAGE']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'build-dataflow-template'
+    entrypoint: 'gcloud'
+    args: [ 'dataflow', 'flex-template', 'build', '$_TEMPLATE_GCS_LOCATION', '--image', 'gcr.io/$PROJECT_ID/$_TARGET_GCR_IMAGE', '--sdk-language', 'PYTHON', '--metadata-file', 'wordcount/spec/metadata.json']
