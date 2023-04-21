@@ -7,8 +7,8 @@ ARG WORKDIR=/dataflow/template
 RUN mkdir -p ${WORKDIR}
 WORKDIR ${WORKDIR}
 
-COPY src/pipeline.py ${WORKDIR}
+COPY . ${WORKDIR}
 
-ENV FLEX_TEMPLATE_PYTHON_PY_FILE="${WORKDIR}/pipeline.py"
+ENV FLEX_TEMPLATE_PYTHON_PY_FILE="${WORKDIR}/src/pipeline.py"
 
 ENTRYPOINT ["/opt/google/dataflow/python_template_launcher"]
