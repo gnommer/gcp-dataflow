@@ -8,6 +8,7 @@ RUN mkdir -p ${WORKDIR}
 WORKDIR ${WORKDIR}
 
 COPY . ${WORKDIR}
+RUN pip3 install -r ${WORKDIR}/requirements.txt
 
 ENV FLEX_TEMPLATE_PYTHON_PY_FILE="${WORKDIR}/src/pipeline.py"
 
