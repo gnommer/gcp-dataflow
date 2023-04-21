@@ -6,7 +6,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--test", default='testing param', help='this is a testing param')
     args, kwargs = parser.parse_known_args()
-    with Pipeline() as p:
+    with Pipeline(streaming=False) as p:
         (
             p 
             | "Initalize" >> beam.Create([{"test": 1}, {"test": 2}, {"test": args}])
