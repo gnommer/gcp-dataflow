@@ -1,5 +1,5 @@
 FROM gcr.io/dataflow-templates-base/python3-template-launcher-base:latest as template_launcher
-FROM python:3.6
+FROM python:3.8-slim
 
 COPY --from=template_launcher /opt/google/dataflow/python_template_launcher /opt/google/dataflow/python_template_launcher
 
@@ -8,8 +8,12 @@ RUN mkdir -p ${WORKDIR}
 WORKDIR ${WORKDIR}
 
 COPY . ${WORKDIR}
-RUN pip install apache-beam[gcp]
-RUN pip3 install -r ${WORKDIR}/requirements.txt
+RUN apt-get update \
+    && apt-get install -y libffi-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --no-cache-dir upgrade pip \
+    && pip3 download --no-cache-dir -r ${WORKDIR}/requirements.txt \
+    && pip3 install --no-cache-dir -r ${WORKDIR}/requirements.txt
 
 ENV FLEX_TEMPLATE_PYTHON_PY_FILE="${WORKDIR}/src/pipeline.py"
 
