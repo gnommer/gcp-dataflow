@@ -3,9 +3,7 @@ steps:
     entrypoint: get-build-number
     args:
     - -c
-    - | 
-      echo BUILD_NO=$(date +'%Y%m%d.%H%M%S')
-      echo $BUILD_NO > build.txt
+    - echo $(date +'%Y%m%d.%H%M%S') > build.txt
 
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-container
