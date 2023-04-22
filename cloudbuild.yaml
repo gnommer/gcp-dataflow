@@ -10,24 +10,16 @@ steps:
     id: build-dataflow-container
     env:
     - PROJECT=${PROJECT_ID}
-    - IMAGE_NAME=${_IMAGE_NAME}:$(cat BUILD_NO)
-    - TEMPLATE_LOCATION=${_TEMPLATE_GCS_LOCATION}
+    - IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat BUILD_NO)
+    - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
     args: ['.deploy/build.sh']
 
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-template
     env:
     - JOB_NAME=intro-beam
-    - IMAGE_NAME=${_IMAGE_NAME}
-    - TEMPLATE_LOCATION=${_TEMPLATE_GCS_LOCATION}
+    - IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat BUILD_NO)
+    - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
     args: ['.deploy/run.sh']
-
-substitutions:
-  _IMAGE_NAME: gcr.io/${PROJECT_ID}/intro_beam
-  _TEMPLATE_GCS_LOCATION: gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
-
-options:
-  dynamic_substitutions: True
-
 tags: ["my-tag"]
 
