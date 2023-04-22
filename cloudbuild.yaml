@@ -3,20 +3,18 @@ steps:
     entrypoint: get-build-number
     args:
     - -c
-    - |
-      echo "export BUILD_NO=$(date +'%Y%m%d.%H%M%S')" >> $HOME/.bashrc
-      source $HOME/.bashrc
-    env:
-    - 'HOME=/builder/home'
-    - 'BASH_ENV=/builder/home/.bashrc'
+    - | 
+      echo BUILD_NO=$(date +'%Y%m%d.%H%M%S')
+      echo $BUILD_NO > build.txt
+
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-container
     env:
     - PROJECT=${PROJECT_ID}
-    - IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:${BUILD_NO}
-    - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/${BUILD_NO}.json
     script: |
       chmod +x ./deploy/build.sh
+      export IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat build.txt)
+      export TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat build.txt).json
       sh ./deploy/build.sh
     waitFor: 
       - get-build-number
@@ -24,15 +22,13 @@ steps:
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-template
     env:
-    - JOB_NAME=intro-beam-${BUILD_NO}
-    - IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:${BUILD_NO}
-    - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/${BUILD_NO}.jso
+    - PROJECT=${PROJECT_ID}
     script: |
       chmod +x ./deploy/run.sh
+      export JOB_NAME=intro-beam-$(cat build.txt)
+      export IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat build.txt)
+      export TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat build.txt).json
       sh ./deploy/run.sh
     waitFor:
       - build-dataflow-container
 tags: ["my-tag"]
-
-substitutions:
-  _HOME: /builder/home
