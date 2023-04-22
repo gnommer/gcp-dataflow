@@ -9,7 +9,6 @@ steps:
     env:
     - 'HOME=/builder/home'
     - 'BASH_ENV=/builder/home/.bashrc'
-  
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-container
     env:
@@ -35,3 +34,5 @@ steps:
       - build-dataflow-container
 tags: ["my-tag"]
 
+substitutions:
+  _HOME: /builder/home
