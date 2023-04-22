@@ -4,8 +4,8 @@ steps:
     args:
     - -c
     - |
-      echo "export BUILD_NO=$(date +'%Y%m%d.%H%M%S')" >> $BASH_ENV
-      source $BASH_ENV
+      echo "export BUILD_NO=$(date +'%Y%m%d.%H%M%S')" >> $HOME/.bashrc
+      source $HOME/.bashrc
   
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-container
