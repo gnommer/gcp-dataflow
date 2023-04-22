@@ -1,5 +1,6 @@
 steps:
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: get-build-number
     script: | 
       echo $(date +'%Y%m%d').$(expr $(git rev-list --count master) - $(git rev-list --count master --since=$(date -d '1 days ago' +'%d-%m-%Y'))) > BUILD_NO
       echo $(cat BUILD_NO)
@@ -12,7 +13,7 @@ steps:
     - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
     args: ['deploy/build.sh']
     waitFor: 
-      - bash
+      - get-build-number
 
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-template
