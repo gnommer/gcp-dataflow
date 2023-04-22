@@ -12,7 +12,7 @@ steps:
     - PROJECT=${PROJECT_ID}
     script: |
       chmod +x ./deploy/build.sh
-      export IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat build.txt)
+      export IMAGE_NAME=gcr.io/${PROJECT}/intro_beam:$(cat build.txt)
       export TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat build.txt).json
       sh ./deploy/build.sh
     waitFor: 
