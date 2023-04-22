@@ -20,7 +20,7 @@ steps:
     - JOB_NAME=intro-beam
     - IMAGE_NAME=${_IMAGE_NAME}
     - TEMPLATE_LOCATION=${_TEMPLATE_GCS_LOCATION}
-    args: ['.deploy/build.sh']
+    args: ['.deploy/run.sh']
 
 substitutions:
   _IMAGE_NAME: gcr.io/${PROJECT_ID}/intro_beam
