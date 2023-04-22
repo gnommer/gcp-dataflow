@@ -1,13 +1,10 @@
 steps:
-  - name: gcr.io/cloud-builders/git
-    args: ["fetch", "--unshallow"]
-
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    id: get-build-number
+  - name: 'gcr.io/cloud-builders/cloud-sdk'
+    id: save_config
     script: | 
-      echo $(date +'%Y%m%d').$(expr $(git rev-list --count master) - $(git rev-list --count master --since=$(date -d '1 days ago' +'%d-%m-%Y'))) > BUILD_NO
-      echo $(cat BUILD_NO)
-
+      BUILD_NO=$(date +'%Y%m%d.%H%M%S')
+      echo $BUILD_NO > BUILD_NO
+  
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-container
     env:
