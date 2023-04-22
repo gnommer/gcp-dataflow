@@ -1,6 +1,6 @@
 steps:
   - name: 'gcr.io/cloud-builders/cloud-sdk'
-    id: save_config
+    id: get-build-number
     script: | 
       BUILD_NO=$(date +'%Y%m%d.%H%M%S')
       echo $BUILD_NO > BUILD_NO
