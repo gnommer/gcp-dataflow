@@ -14,7 +14,9 @@ steps:
     - PROJECT=${PROJECT_ID}
     - IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat BUILD_NO)
     - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
-    args: ['./deploy/build.sh']
+    script: |
+      chmod +x ./deploy/build.sh
+      sh ./deploy/build.sh
     waitFor: 
       - get-build-number
 
@@ -24,7 +26,9 @@ steps:
     - JOB_NAME=intro-beam
     - IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat BUILD_NO)
     - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
-    args: ['./deploy/run.sh']
+    script: |
+      chmod +x ./deploy/run.sh
+      sh ./deploy/run.sh
     waitFor:
       - build-dataflow-container
 tags: ["my-tag"]
