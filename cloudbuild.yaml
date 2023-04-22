@@ -1,4 +1,7 @@
 steps:
+  - name: gcr.io/cloud-builders/git
+    args: ["fetch", "--unshallow"]
+
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: get-build-number
     script: | 
@@ -11,7 +14,7 @@ steps:
     - PROJECT=${PROJECT_ID}
     - IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat BUILD_NO)
     - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
-    args: ['deploy/build.sh']
+    args: ['./deploy/build.sh']
     waitFor: 
       - get-build-number
 
@@ -21,7 +24,7 @@ steps:
     - JOB_NAME=intro-beam
     - IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat BUILD_NO)
     - TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
-    args: ['deploy/run.sh']
+    args: ['./deploy/run.sh']
     waitFor:
       - build-dataflow-container
 tags: ["my-tag"]
