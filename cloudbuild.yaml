@@ -1,7 +1,7 @@
 steps:
   - name: gcr.io/cloud-builders/git
     entrypoint: /bin/bash
-    args: ["-c", "echo $(date +'%Y%m%d').$(expr $(git rev-list --count master) - $(git rev-list --count master --since=$(date -v-1d +'%d-%m-%Y'))) > BUILD_NO"]
+    args: ["-c", "echo $(date +'%Y%m%d').$(expr $(git rev-list --count master) - $(git rev-list --count master --since=$(date -d '1 days ago' +'%d-%m-%Y'))) > BUILD_NO"]
   
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: build-dataflow-container
