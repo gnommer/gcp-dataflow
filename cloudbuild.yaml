@@ -1,6 +1,7 @@
 steps:
   - name: gcr.io/cloud-builders/docker
-    entrypoint: get-build-number
+    id: get-build-number
+    entrypoint: bash
     args:
     - -c
     - echo $(date +'%Y%m%d.%H%M%S') > build.txt
