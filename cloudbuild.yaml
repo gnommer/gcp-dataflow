@@ -1,8 +1,5 @@
 steps:
   - name: gcr.io/cloud-builders/git
-    args: ["fetch", "--unshallow"]
-
-  - name: gcr.io/cloud-builders/git
     entrypoint: /bin/bash
     args: ["-c", "echo $(date +'%Y%m%d').$(expr $(git rev-list --count main) - $(git rev-list --count main --since=$(date -v-1d +'%d-%m-%Y'))) > BUILD_NO"]
   
