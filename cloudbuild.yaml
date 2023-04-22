@@ -1,16 +1,33 @@
 steps:
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: 'build-dataflow-container'
-    entrypoint: 'gcloud'
-    args: [ 'builds', 'submit', '--project=$PROJECT_ID', '--tag', '${_IMAGE_NAME}']
+  - name: gcr.io/cloud-builders/git
+    args: ["fetch", "--unshallow"]
 
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: 'build-dataflow-template'
-    entrypoint: 'gcloud'
-    args: [ 'dataflow', 'flex-template', 'build', '${_TEMPLATE_GCS_LOCATION}', '--image', '${_IMAGE_NAME}', '--sdk-language', 'PYTHON', '--metadata-file', 'deploy/metadata.json']
+  - name: gcr.io/cloud-builders/git
+    entrypoint: /bin/bash
+    args: ["-c", "echo $(date +'%Y%m%d').$(expr $(git rev-list --count main) - $(git rev-list --count main --since=$(date -v-1d +'%d-%m-%Y'))) > BUILD_NO"]
+  
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: build-dataflow-container
+    env:
+    - PROJECT=${PROJECT_ID}
+    - IMAGE_NAME=${_IMAGE_NAME}:$(cat BUILD_NO)
+    - TEMPLATE_LOCATION=${_TEMPLATE_GCS_LOCATION}
+    args: ['.deploy/build.sh']
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: build-dataflow-template
+    env:
+    - JOB_NAME=intro-beam
+    - IMAGE_NAME=${_IMAGE_NAME}
+    - TEMPLATE_LOCATION=${_TEMPLATE_GCS_LOCATION}
+    args: ['.deploy/build.sh']
+
 substitutions:
-  _IMAGE_NAME: 'gcr.io/${PROJECT_ID}/intro_beam:${SHORT_SHA}'
-  _TEMPLATE_GCS_LOCATION: gs://dataflow-image-custom/template
+  _IMAGE_NAME: gcr.io/${PROJECT_ID}/intro_beam
+  _TEMPLATE_GCS_LOCATION: gs://dataflow-image-custom/templates/$(cat BUILD_NO).json
+
 options:
   dynamic_substitutions: True
+
+tags: ["my-tag"]
 
