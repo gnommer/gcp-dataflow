@@ -17,17 +17,3 @@ steps:
       sh ./deploy/build.sh
     waitFor: 
       - get-build-number
-
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    id: build-dataflow-template
-    env:
-    - PROJECT=${PROJECT_ID}
-    script: |
-      chmod +x ./deploy/run.sh
-      export JOB_NAME=intro-beam-$(cat build.txt)
-      export IMAGE_NAME=gcr.io/${PROJECT_ID}/intro_beam:$(cat build.txt)
-      export TEMPLATE_LOCATION=gs://dataflow-image-custom/templates/$(cat build.txt).json
-      sh ./deploy/run.sh
-    waitFor:
-      - build-dataflow-container
-tags: ["my-tag"]
